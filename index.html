@@ -17,13 +17,13 @@
 
         <div class="logo">
             <img src="logo.png.png" alt="Logo">
+
             <div>
                 <span>TOOL ROOM</span>
                 <small>PT INTI UTAMA PERKASA</small>
             </div>
         </div>
 
-        <!-- MENU -->
         <nav>
 
             <a href="index.html" class="active">
@@ -67,7 +67,6 @@
     <!-- KONTEN UTAMA -->
     <main class="content">
 
-        <!-- HEADER -->
         <header class="topbar">
 
             <h1>TOOL ROOM MANAGEMENT</h1>
@@ -96,7 +95,10 @@
 
                     <div>
                         <h3>Master Alat</h3>
-                        <p>0 Alat</p>
+
+                        <p id="jumlahAlat">
+                            0 Alat
+                        </p>
                     </div>
 
                 </div>
@@ -110,7 +112,10 @@
 
                     <div>
                         <h3>Stock Masuk</h3>
-                        <p>0 Transaksi</p>
+
+                        <p id="jumlahStockMasuk">
+                            0 Transaksi
+                        </p>
                     </div>
 
                 </div>
@@ -124,7 +129,10 @@
 
                     <div>
                         <h3>Peminjaman</h3>
-                        <p>0 Alat Dipinjam</p>
+
+                        <p id="jumlahPeminjaman">
+                            0 Alat Dipinjam
+                        </p>
                     </div>
 
                 </div>
@@ -138,7 +146,10 @@
 
                     <div>
                         <h3>Pengembalian</h3>
-                        <p>0 Pengembalian</p>
+
+                        <p id="jumlahPengembalian">
+                            0 Pengembalian
+                        </p>
                     </div>
 
                 </div>
@@ -149,7 +160,9 @@
             <!-- WELCOME -->
             <div class="welcome">
 
-                <h2>Selamat Datang di Tool Room 👋</h2>
+                <h2>
+                    Selamat Datang di Tool Room 👋
+                </h2>
 
                 <p>
                     Gunakan menu di sebelah kiri untuk mengelola
@@ -162,6 +175,115 @@
         </section>
 
     </main>
+
+
+<script>
+
+/* ==============================
+   DATA MASTER ALAT
+   ============================== */
+
+let dataAlat =
+    JSON.parse(
+        localStorage.getItem("dataAlat")
+    ) || [];
+
+
+/* ==============================
+   DATA STOCK MASUK
+   ============================== */
+
+let dataStockMasuk =
+    JSON.parse(
+        localStorage.getItem("dataStockMasuk")
+    ) || [];
+
+
+/* ==============================
+   DATA PEMINJAMAN
+   ============================== */
+
+let dataPeminjaman =
+    JSON.parse(
+        localStorage.getItem("dataPeminjaman")
+    ) || [];
+
+
+/* ==============================
+   DATA PENGEMBALIAN
+   ============================== */
+
+let dataPengembalian =
+    JSON.parse(
+        localStorage.getItem("dataPengembalian")
+    ) || [];
+
+
+
+/* ==============================
+   JUMLAH MASTER ALAT
+   ============================== */
+
+document.getElementById(
+    "jumlahAlat"
+).textContent =
+    dataAlat.length + " Alat";
+
+
+
+/* ==============================
+   JUMLAH STOCK MASUK
+   ============================== */
+
+document.getElementById(
+    "jumlahStockMasuk"
+).textContent =
+    dataStockMasuk.length +
+    " Transaksi";
+
+
+
+/* ==============================
+   JUMLAH ALAT YANG MASIH DIPINJAM
+   ============================== */
+
+let totalDipinjam = 0;
+
+
+dataPeminjaman.forEach(
+    function(data) {
+
+        if (data.status === "Dipinjam") {
+
+            totalDipinjam +=
+                parseInt(data.jumlah) || 0;
+
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "jumlahPeminjaman"
+).textContent =
+    totalDipinjam +
+    " Alat Dipinjam";
+
+
+
+/* ==============================
+   JUMLAH PENGEMBALIAN
+   ============================== */
+
+document.getElementById(
+    "jumlahPengembalian"
+).textContent =
+    dataPengembalian.length +
+    " Pengembalian";
+
+</script>
+
 
 </body>
 
