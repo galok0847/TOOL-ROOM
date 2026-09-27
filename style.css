@@ -1,31 +1,290 @@
+/* =========================
+   DASAR WEBSITE
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background: #f4f5f7;
+    color: #202631;
 }
 
-h1 {
-    background-color: #202631;
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    width: 250px;
+    height: 100vh;
+
+    background: #202631;
     color: white;
-    margin: 0;
-    padding: 30px;
+
+    padding: 25px 15px;
+
+    display: flex;
+    flex-direction: column;
 }
 
-p {
-    padding: 20px;
-    font-size: 18px;
+
+/* LOGO */
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+
+    padding: 15px;
+
+    margin-bottom: 30px;
 }
 
-button {
-    background-color: #f59a23;
-    border: none;
-    padding: 12px 20px;
-    margin: 10px;
+.logo span {
+    margin-left: 8px;
+}
+
+
+/* MENU */
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar nav a {
+    color: white;
+
+    text-decoration: none;
+
+    padding: 14px 15px;
+
     border-radius: 8px;
-    cursor: pointer;
+
+    font-size: 15px;
+
+    transition: 0.2s;
+}
+
+
+/* HOVER */
+
+.sidebar nav a:hover {
+    background: #333b49;
+}
+
+
+/* MENU AKTIF */
+
+.sidebar nav a.active {
+    background: #f59a23;
+    color: #111;
     font-weight: bold;
 }
 
-button:hover {
-    background-color: #ffb347;
+
+/* USER */
+
+.user {
+    margin-top: auto;
+
+    background: #333b49;
+
+    padding: 14px;
+
+    border-radius: 8px;
+
+    text-align: center;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   KONTEN UTAMA
+========================= */
+
+.content {
+    margin-left: 250px;
+
+    min-height: 100vh;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.topbar {
+    background: #ffffff;
+
+    padding: 30px 40px;
+
+    border-bottom: 1px solid #ddd;
+}
+
+.topbar h1 {
+    margin: 0;
+
+    font-size: 28px;
+}
+
+.topbar p {
+    margin-top: 8px;
+
+    color: #777;
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard {
+    padding: 35px 40px;
+}
+
+.dashboard > h2 {
+    margin-bottom: 25px;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.cards {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 20px;
+}
+
+
+.card {
+    background: white;
+
+    padding: 22px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+
+.card .icon {
+    font-size: 35px;
+}
+
+
+.card h3 {
+    margin: 0 0 5px 0;
+
+    font-size: 16px;
+}
+
+
+.card p {
+    margin: 0;
+
+    color: #777;
+}
+
+
+/* =========================
+   WELCOME
+========================= */
+
+.welcome {
+    background: white;
+
+    margin-top: 30px;
+
+    padding: 30px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
+}
+
+.welcome h2 {
+    margin-top: 0;
+}
+
+.welcome p {
+    color: #666;
+
+    line-height: 1.6;
+}
+
+
+/* =========================
+   RESPONSIVE HP
+========================= */
+
+@media (max-width: 900px) {
+
+    .cards {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .sidebar {
+        width: 70px;
+        padding: 15px 8px;
+    }
+
+    .logo span {
+        display: none;
+    }
+
+    .sidebar nav a {
+        font-size: 0;
+        text-align: center;
+    }
+
+    .sidebar nav a:first-letter {
+        font-size: 20px;
+    }
+
+    .user {
+        font-size: 0;
+    }
+
+    .content {
+        margin-left: 70px;
+    }
+
+    .topbar,
+    .dashboard {
+        padding: 20px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
 }
