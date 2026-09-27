@@ -2,14 +2,20 @@
 <html lang="id">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Master Alat - Tool Room</title>
 
     <link rel="stylesheet" href="style.css">
 
     <style>
+
+        /* TOOLBAR */
+
         .toolbar {
             display: flex;
             justify-content: space-between;
@@ -18,17 +24,27 @@
             margin-bottom: 20px;
         }
 
-        .search {
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            width: 300px;
+        .toolbar-right {
+            display: flex;
+            gap: 10px;
         }
+
+        /* INPUT SEARCH */
+
+        .search {
+            width: 280px;
+            padding: 11px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        /* BUTTON */
 
         .btn {
             border: none;
-            padding: 11px 18px;
-            border-radius: 8px;
+            padding: 10px 16px;
+            border-radius: 7px;
             cursor: pointer;
             font-weight: bold;
         }
@@ -49,6 +65,18 @@
             color: white;
         }
 
+        .btn-simpan {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-batal {
+            background: #777;
+            color: white;
+        }
+
+        /* TABLE */
+
         .table-box {
             background: white;
             padding: 20px;
@@ -62,17 +90,47 @@
             border-collapse: collapse;
         }
 
-        th,
-        td {
-            padding: 13px;
-            border-bottom: 1px solid #eee;
-            text-align: left;
-        }
-
         th {
             background: #202631;
             color: white;
+            padding: 13px;
+            text-align: left;
         }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f8f8f8;
+        }
+
+        /* KONDISI */
+
+        .kondisi {
+            padding: 5px 9px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .baik {
+            background: #d5f5e3;
+            color: #1e8449;
+        }
+
+        .rusak-ringan {
+            background: #fcf3cf;
+            color: #9a7d0a;
+        }
+
+        .rusak-berat {
+            background: #fadbd8;
+            color: #922b21;
+        }
+
+        /* MODAL */
 
         .modal {
             display: none;
@@ -81,12 +139,13 @@
             background: rgba(0,0,0,0.5);
             align-items: center;
             justify-content: center;
+            z-index: 1000;
         }
 
         .modal-content {
             background: white;
-            width: 450px;
-            max-width: 90%;
+            width: 500px;
+            max-width: 92%;
             padding: 25px;
             border-radius: 12px;
         }
@@ -120,28 +179,47 @@
             margin-top: 20px;
         }
 
-        .btn-simpan {
-            background: #27ae60;
-            color: white;
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .toolbar-right {
+                flex-direction: column;
+            }
+
+            .search {
+                width: 100%;
+            }
+
         }
 
-        .btn-batal {
-            background: #777;
-            color: white;
-        }
     </style>
 
 </head>
 
+
 <body>
+
 
     <!-- SIDEBAR -->
 
     <aside class="sidebar">
 
         <div class="logo">
-            🧰 <span>TOOL ROOM</span>
+
+            <img src="logo.png.png"
+                 alt="Logo"
+                 style="width:42px;height:42px;object-fit:contain;vertical-align:middle;">
+
+            <span>TOOL ROOM</span>
+
         </div>
+
 
         <nav>
 
@@ -149,7 +227,8 @@
                 🏠 Dashboard
             </a>
 
-            <a href="master-alat.html" class="active">
+            <a href="master-alat.html"
+               class="active">
                 🧰 Master Alat
             </a>
 
@@ -175,17 +254,23 @@
 
         </nav>
 
+
         <div class="user">
+
             👷<br>
+
             <strong>TOOLMAN</strong>
+
         </div>
 
     </aside>
 
 
-    <!-- KONTEN -->
+
+    <!-- CONTENT -->
 
     <main class="content">
+
 
         <header class="topbar">
 
@@ -198,21 +283,29 @@
         </header>
 
 
+
         <section class="dashboard">
+
+
+            <!-- TOOLBAR -->
 
             <div class="toolbar">
 
-                <h2>Daftar Alat</h2>
+                <h2>
+                    Daftar Alat
+                </h2>
 
-                <div>
+
+                <div class="toolbar-right">
 
                     <input
                         type="text"
                         id="search"
                         class="search"
-                        placeholder="🔎 Cari alat..."
+                        placeholder="🔎 Cari kode / nama alat..."
                         onkeyup="tampilkanData()"
                     >
+
 
                     <button
                         class="btn btn-tambah"
@@ -226,6 +319,9 @@
             </div>
 
 
+
+            <!-- TABLE -->
+
             <div class="table-box">
 
                 <table>
@@ -233,17 +329,29 @@
                     <thead>
 
                         <tr>
+
                             <th>No</th>
+
                             <th>Kode Alat</th>
+
                             <th>Nama Alat</th>
+
                             <th>Kategori</th>
+
                             <th>Merk</th>
+
                             <th>Stok</th>
+
                             <th>Lokasi</th>
+
+                            <th>Kondisi</th>
+
                             <th>Aksi</th>
+
                         </tr>
 
                     </thead>
+
 
                     <tbody id="dataAlat">
 
@@ -253,24 +361,35 @@
 
             </div>
 
+
         </section>
 
     </main>
 
 
-    <!-- MODAL FORM -->
 
-    <div class="modal" id="modal">
+    <!-- FORM TAMBAH / EDIT -->
+
+    <div
+        class="modal"
+        id="modal"
+    >
 
         <div class="modal-content">
+
 
             <h2 id="judulForm">
                 Tambah Alat
             </h2>
 
+
+            <!-- KODE -->
+
             <div class="form-group">
 
-                <label>Kode Alat</label>
+                <label>
+                    Kode Alat
+                </label>
 
                 <input
                     type="text"
@@ -281,9 +400,13 @@
             </div>
 
 
+            <!-- NAMA -->
+
             <div class="form-group">
 
-                <label>Nama Alat</label>
+                <label>
+                    Nama Alat
+                </label>
 
                 <input
                     type="text"
@@ -294,9 +417,13 @@
             </div>
 
 
+            <!-- KATEGORI -->
+
             <div class="form-group">
 
-                <label>Kategori</label>
+                <label>
+                    Kategori
+                </label>
 
                 <select id="kategori">
 
@@ -317,11 +444,11 @@
                     </option>
 
                     <option>
-                        Safety
+                        Special Tool
                     </option>
 
                     <option>
-                        Special Tool
+                        Safety
                     </option>
 
                     <option>
@@ -333,9 +460,13 @@
             </div>
 
 
+            <!-- MERK -->
+
             <div class="form-group">
 
-                <label>Merk</label>
+                <label>
+                    Merk
+                </label>
 
                 <input
                     type="text"
@@ -346,9 +477,13 @@
             </div>
 
 
+            <!-- STOK -->
+
             <div class="form-group">
 
-                <label>Stok</label>
+                <label>
+                    Stok
+                </label>
 
                 <input
                     type="number"
@@ -360,9 +495,13 @@
             </div>
 
 
+            <!-- LOKASI -->
+
             <div class="form-group">
 
-                <label>Lokasi</label>
+                <label>
+                    Lokasi
+                </label>
 
                 <input
                     type="text"
@@ -373,6 +512,35 @@
             </div>
 
 
+            <!-- KONDISI -->
+
+            <div class="form-group">
+
+                <label>
+                    Kondisi
+                </label>
+
+                <select id="kondisi">
+
+                    <option value="Baik">
+                        Baik
+                    </option>
+
+                    <option value="Rusak Ringan">
+                        Rusak Ringan
+                    </option>
+
+                    <option value="Rusak Berat">
+                        Rusak Berat
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- BUTTON -->
+
             <div class="modal-buttons">
 
                 <button
@@ -381,6 +549,7 @@
                 >
                     Batal
                 </button>
+
 
                 <button
                     class="btn btn-simpan"
@@ -396,147 +565,354 @@
     </div>
 
 
+
     <script>
 
-        let data = JSON.parse(
-            localStorage.getItem("dataAlat")
-        ) || [];
+
+        /* =========================
+           DATA
+        ========================= */
+
+        let data =
+            JSON.parse(
+                localStorage.getItem("dataAlat")
+            ) || [];
+
 
         let indexEdit = -1;
 
 
+
+        /* =========================
+           TAMPILKAN DATA
+        ========================= */
+
         function tampilkanData() {
 
             const tbody =
-                document.getElementById("dataAlat");
+                document.getElementById(
+                    "dataAlat"
+                );
+
 
             const search =
                 document
-                .getElementById("search")
-                .value
-                .toLowerCase();
+                    .getElementById("search")
+                    .value
+                    .toLowerCase();
+
 
             tbody.innerHTML = "";
 
 
-            const hasil = data.filter(item =>
+            const hasil =
+                data.filter(item =>
 
-                item.kode.toLowerCase().includes(search) ||
+                    item.kode
+                        .toLowerCase()
+                        .includes(search)
 
-                item.nama.toLowerCase().includes(search) ||
+                    ||
 
-                item.kategori.toLowerCase().includes(search) ||
+                    item.nama
+                        .toLowerCase()
+                        .includes(search)
 
-                item.merk.toLowerCase().includes(search)
+                    ||
 
+                    item.kategori
+                        .toLowerCase()
+                        .includes(search)
+
+                    ||
+
+                    item.merk
+                        .toLowerCase()
+                        .includes(search)
+
+                );
+
+
+            hasil.forEach(
+                (item, index) => {
+
+                    let kondisiClass =
+                        "baik";
+
+
+                    if (
+                        item.kondisi ===
+                        "Rusak Ringan"
+                    ) {
+
+                        kondisiClass =
+                            "rusak-ringan";
+
+                    }
+
+
+                    if (
+                        item.kondisi ===
+                        "Rusak Berat"
+                    ) {
+
+                        kondisiClass =
+                            "rusak-berat";
+
+                    }
+
+
+                    const row =
+                        document.createElement("tr");
+
+
+                    row.innerHTML = `
+
+                        <td>
+                            ${index + 1}
+                        </td>
+
+                        <td>
+                            ${item.kode}
+                        </td>
+
+                        <td>
+                            ${item.nama}
+                        </td>
+
+                        <td>
+                            ${item.kategori}
+                        </td>
+
+                        <td>
+                            ${item.merk}
+                        </td>
+
+                        <td>
+                            <strong>
+                                ${item.stok}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${item.lokasi}
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="kondisi ${kondisiClass}"
+                            >
+                                ${item.kondisi}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="btn btn-edit"
+                                onclick="editData(
+                                    ${data.indexOf(item)}
+                                )"
+                            >
+                                Edit
+                            </button>
+
+
+                            <button
+                                class="btn btn-hapus"
+                                onclick="hapusData(
+                                    ${data.indexOf(item)}
+                                )"
+                            >
+                                Hapus
+                            </button>
+
+                        </td>
+
+                    `;
+
+
+                    tbody.appendChild(row);
+
+                }
             );
-
-
-            hasil.forEach((item, index) => {
-
-                const row =
-                    document.createElement("tr");
-
-                row.innerHTML = `
-
-                    <td>${index + 1}</td>
-
-                    <td>${item.kode}</td>
-
-                    <td>${item.nama}</td>
-
-                    <td>${item.kategori}</td>
-
-                    <td>${item.merk}</td>
-
-                    <td>${item.stok}</td>
-
-                    <td>${item.lokasi}</td>
-
-                    <td>
-
-                        <button
-                            class="btn btn-edit"
-                            onclick="editData(${data.indexOf(item)})"
-                        >
-                            Edit
-                        </button>
-
-                        <button
-                            class="btn btn-hapus"
-                            onclick="hapusData(${data.indexOf(item)})"
-                        >
-                            Hapus
-                        </button>
-
-                    </td>
-
-                `;
-
-                tbody.appendChild(row);
-
-            });
 
         }
 
+
+
+        /* =========================
+           BUKA FORM
+        ========================= */
 
         function bukaForm() {
 
             indexEdit = -1;
 
-            document.getElementById("judulForm")
-                .innerText = "Tambah Alat";
 
-            document.getElementById("kode").value = "";
-            document.getElementById("nama").value = "";
-            document.getElementById("kategori").value = "";
-            document.getElementById("merk").value = "";
-            document.getElementById("stok").value = 0;
-            document.getElementById("lokasi").value = "";
+            document
+                .getElementById("judulForm")
+                .innerText =
+                "Tambah Alat";
 
-            document.getElementById("modal")
+
+            document
+                .getElementById("kode")
+                .value = "";
+
+
+            document
+                .getElementById("nama")
+                .value = "";
+
+
+            document
+                .getElementById("kategori")
+                .value = "";
+
+
+            document
+                .getElementById("merk")
+                .value = "";
+
+
+            document
+                .getElementById("stok")
+                .value = 0;
+
+
+            document
+                .getElementById("lokasi")
+                .value = "";
+
+
+            document
+                .getElementById("kondisi")
+                .value = "Baik";
+
+
+            document
+                .getElementById("modal")
                 .style.display = "flex";
 
         }
 
 
+
+        /* =========================
+           TUTUP FORM
+        ========================= */
+
         function tutupForm() {
 
-            document.getElementById("modal")
+            document
+                .getElementById("modal")
                 .style.display = "none";
 
         }
 
 
+
+        /* =========================
+           SIMPAN
+        ========================= */
+
         function simpanData() {
 
             const kode =
-                document.getElementById("kode").value.trim();
+                document
+                    .getElementById("kode")
+                    .value
+                    .trim();
+
 
             const nama =
-                document.getElementById("nama").value.trim();
+                document
+                    .getElementById("nama")
+                    .value
+                    .trim();
+
 
             const kategori =
-                document.getElementById("kategori").value;
+                document
+                    .getElementById("kategori")
+                    .value;
+
 
             const merk =
-                document.getElementById("merk").value.trim();
+                document
+                    .getElementById("merk")
+                    .value
+                    .trim();
+
 
             const stok =
-                document.getElementById("stok").value;
+                Number(
+                    document
+                        .getElementById("stok")
+                        .value
+                );
+
 
             const lokasi =
-                document.getElementById("lokasi").value.trim();
+                document
+                    .getElementById("lokasi")
+                    .value
+                    .trim();
 
+
+            const kondisi =
+                document
+                    .getElementById("kondisi")
+                    .value;
+
+
+
+            /* VALIDASI */
 
             if (!kode || !nama) {
 
-                alert("Kode alat dan nama alat wajib diisi!");
+                alert(
+                    "Kode alat dan nama alat wajib diisi!"
+                );
 
                 return;
 
             }
 
+
+
+            /* CEK KODE DUPLIKAT */
+
+            const kodeDuplikat =
+                data.some(
+                    (item, index) =>
+
+                        item.kode
+                            .toLowerCase() ===
+                        kode.toLowerCase()
+
+                        &&
+
+                        index !== indexEdit
+                );
+
+
+            if (kodeDuplikat) {
+
+                alert(
+                    "Kode alat sudah digunakan!"
+                );
+
+                return;
+
+            }
+
+
+
+            /* OBJECT */
 
             const alat = {
 
@@ -548,23 +924,36 @@
 
                 merk: merk,
 
-                stok: Number(stok),
+                stok: stok,
 
-                lokasi: lokasi
+                lokasi: lokasi,
+
+                kondisi: kondisi
 
             };
 
+
+
+            /* TAMBAH */
 
             if (indexEdit === -1) {
 
                 data.push(alat);
 
-            } else {
+            }
 
-                data[indexEdit] = alat;
+            /* EDIT */
+
+            else {
+
+                data[indexEdit] =
+                    alat;
 
             }
 
+
+
+            /* SIMPAN */
 
             localStorage.setItem(
                 "dataAlat",
@@ -579,55 +968,106 @@
         }
 
 
+
+        /* =========================
+           EDIT
+        ========================= */
+
         function editData(index) {
 
             indexEdit = index;
 
-            const item = data[index];
+
+            const item =
+                data[index];
 
 
-            document.getElementById("judulForm")
-                .innerText = "Edit Alat";
+            document
+                .getElementById("judulForm")
+                .innerText =
+                "Edit Alat";
 
-            document.getElementById("kode").value =
+
+            document
+                .getElementById("kode")
+                .value =
                 item.kode;
 
-            document.getElementById("nama").value =
+
+            document
+                .getElementById("nama")
+                .value =
                 item.nama;
 
-            document.getElementById("kategori").value =
+
+            document
+                .getElementById("kategori")
+                .value =
                 item.kategori;
 
-            document.getElementById("merk").value =
+
+            document
+                .getElementById("merk")
+                .value =
                 item.merk;
 
-            document.getElementById("stok").value =
+
+            document
+                .getElementById("stok")
+                .value =
                 item.stok;
 
-            document.getElementById("lokasi").value =
+
+            document
+                .getElementById("lokasi")
+                .value =
                 item.lokasi;
 
 
-            document.getElementById("modal")
-                .style.display = "flex";
+            document
+                .getElementById("kondisi")
+                .value =
+                item.kondisi;
+
+
+            document
+                .getElementById("modal")
+                .style.display =
+                "flex";
 
         }
 
 
+
+        /* =========================
+           HAPUS
+        ========================= */
+
         function hapusData(index) {
+
+            const item =
+                data[index];
+
 
             if (
                 confirm(
-                    "Apakah Anda yakin ingin menghapus alat ini?"
+                    "Hapus " +
+                    item.nama +
+                    "?"
                 )
             ) {
 
-                data.splice(index, 1);
+                data.splice(
+                    index,
+                    1
+                );
+
 
                 localStorage.setItem(
                     "dataAlat",
                     JSON.stringify(data)
                 );
+
 
                 tampilkanData();
 
@@ -636,9 +1076,13 @@
         }
 
 
+
+        /* JALANKAN */
+
         tampilkanData();
 
     </script>
+
 
 </body>
 
