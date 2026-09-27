@@ -1,1 +1,672 @@
+<!DOCTYPE html>
+<html lang="id">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Peminjaman - Tool Room</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #d68910;
+        }
+
+        .table-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #343a40;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background: white;
+            width: 500px;
+            max-width: 90%;
+            margin: 60px auto;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .modal-footer {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn-cancel {
+            background: #777;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .status-pinjam {
+            background: #ffeaa7;
+            color: #856404;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <img src="logo.png.png" alt="Logo">
+
+            <div>
+                <span>TOOL ROOM</span>
+                <small>PT INTI UTAMA PERKASA</small>
+            </div>
+        </div>
+
+        <nav>
+
+            <a href="index.html">
+                🏠 Dashboard
+            </a>
+
+            <a href="master-alat.html">
+                🧰 Master Alat
+            </a>
+
+            <a href="stock-masuk.html">
+                📦 Stock Masuk
+            </a>
+
+            <a href="peminjaman.html" class="active">
+                👤 Peminjaman
+            </a>
+
+            <a href="pengembalian.html">
+                ↩️ Pengembalian
+            </a>
+
+            <a href="stock-opname.html">
+                📋 Stock Opname
+            </a>
+
+            <a href="berita-acara.html">
+                📄 Berita Acara
+            </a>
+
+        </nav>
+
+        <div class="user">
+            👷<br>
+            <strong>TOOLMAN</strong>
+        </div>
+
+    </aside>
+
+
+    <!-- KONTEN -->
+    <main class="content">
+
+        <header class="topbar">
+
+            <h1>PEMINJAMAN ALAT</h1>
+
+            <p>
+                Pencatatan peminjaman alat dari Tool Room
+            </p>
+
+        </header>
+
+
+        <section class="dashboard">
+
+            <div class="page-header">
+
+                <h2>👤 Data Peminjaman</h2>
+
+                <button class="btn" onclick="bukaModal()">
+                    + Peminjaman
+                </button>
+
+            </div>
+
+
+            <div class="table-box">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>No</th>
+                            <th>Tanggal</th>
+                            <th>Kode Alat</th>
+                            <th>Nama Alat</th>
+                            <th>Peminjam</th>
+                            <th>Departemen</th>
+                            <th>Jumlah</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tabelPeminjaman">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- MODAL -->
+    <div id="modal" class="modal">
+
+        <div class="modal-content">
+
+            <h2>Tambah Peminjaman</h2>
+
+            <div class="form-group">
+
+                <label>Tanggal Peminjaman</label>
+
+                <input type="date" id="tanggal">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Pilih Alat</label>
+
+                <select id="alat">
+
+                    <option value="">
+                        -- Pilih Alat --
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Nama Peminjam</label>
+
+                <input
+                    type="text"
+                    id="peminjam"
+                    placeholder="Nama peminjam"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Departemen / Section</label>
+
+                <input
+                    type="text"
+                    id="departemen"
+                    placeholder="Contoh: Maintenance"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Jumlah</label>
+
+                <input
+                    type="number"
+                    id="jumlah"
+                    min="1"
+                    value="1"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Keterangan</label>
+
+                <textarea
+                    id="keterangan"
+                    rows="3"
+                    placeholder="Keterangan"
+                ></textarea>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn btn-cancel"
+                    onclick="tutupModal()">
+                    Batal
+                </button>
+
+                <button
+                    class="btn"
+                    onclick="simpanPeminjaman()">
+                    Simpan
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+<script>
+
+let dataPeminjaman =
+    JSON.parse(localStorage.getItem("dataPeminjaman")) || [];
+
+
+/* BUKA MODAL */
+
+function bukaModal() {
+
+    document.getElementById("modal").style.display = "block";
+
+    isiDaftarAlat();
+
+    document.getElementById("tanggal").value =
+        new Date().toISOString().split("T")[0];
+}
+
+
+/* TUTUP MODAL */
+
+function tutupModal() {
+
+    document.getElementById("modal").style.display = "none";
+
+}
+
+
+/* ISI DAFTAR ALAT */
+
+function isiDaftarAlat() {
+
+    let dataAlat =
+        JSON.parse(localStorage.getItem("dataAlat")) || [];
+
+    let select =
+        document.getElementById("alat");
+
+    select.innerHTML =
+        '<option value="">-- Pilih Alat --</option>';
+
+    dataAlat.forEach(function(alat) {
+
+        let option =
+            document.createElement("option");
+
+        option.value = alat.kode;
+
+        option.textContent =
+            alat.kode + " - " + alat.nama +
+            " | Stok: " + alat.stok;
+
+        select.appendChild(option);
+
+    });
+
+}
+
+
+/* SIMPAN PEMINJAMAN */
+
+function simpanPeminjaman() {
+
+    let tanggal =
+        document.getElementById("tanggal").value;
+
+    let kodeAlat =
+        document.getElementById("alat").value;
+
+    let peminjam =
+        document.getElementById("peminjam").value.trim();
+
+    let departemen =
+        document.getElementById("departemen").value.trim();
+
+    let jumlah =
+        parseInt(document.getElementById("jumlah").value);
+
+    let keterangan =
+        document.getElementById("keterangan").value.trim();
+
+
+    if (
+        !tanggal ||
+        !kodeAlat ||
+        !peminjam ||
+        !departemen ||
+        !jumlah
+    ) {
+
+        alert("Mohon lengkapi semua data.");
+
+        return;
+    }
+
+
+    let dataAlat =
+        JSON.parse(localStorage.getItem("dataAlat")) || [];
+
+
+    let alat =
+        dataAlat.find(function(item) {
+
+            return item.kode === kodeAlat;
+
+        });
+
+
+    if (!alat) {
+
+        alert("Data alat tidak ditemukan.");
+
+        return;
+
+    }
+
+
+    if (jumlah > parseInt(alat.stok)) {
+
+        alert(
+            "Stok tidak mencukupi.\n" +
+            "Stok tersedia: " + alat.stok
+        );
+
+        return;
+
+    }
+
+
+    /* KURANGI STOK */
+
+    alat.stok =
+        parseInt(alat.stok) - jumlah;
+
+
+    localStorage.setItem(
+        "dataAlat",
+        JSON.stringify(dataAlat)
+    );
+
+
+    let dataBaru = {
+
+        id: Date.now(),
+
+        tanggal: tanggal,
+
+        kode: alat.kode,
+
+        nama: alat.nama,
+
+        peminjam: peminjam,
+
+        departemen: departemen,
+
+        jumlah: jumlah,
+
+        keterangan: keterangan,
+
+        status: "Dipinjam"
+
+    };
+
+
+    dataPeminjaman.push(dataBaru);
+
+
+    localStorage.setItem(
+        "dataPeminjaman",
+        JSON.stringify(dataPeminjaman)
+    );
+
+
+    tutupModal();
+
+    tampilkanData();
+
+}
+
+
+/* TAMPILKAN DATA */
+
+function tampilkanData() {
+
+    let tbody =
+        document.getElementById("tabelPeminjaman");
+
+    tbody.innerHTML = "";
+
+
+    dataPeminjaman.forEach(function(data, index) {
+
+        let row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td>${index + 1}</td>
+
+            <td>${data.tanggal}</td>
+
+            <td>${data.kode}</td>
+
+            <td>${data.nama}</td>
+
+            <td>${data.peminjam}</td>
+
+            <td>${data.departemen}</td>
+
+            <td>${data.jumlah}</td>
+
+            <td>
+                <span class="status status-pinjam">
+                    ${data.status}
+                </span>
+            </td>
+
+            <td>
+
+                <button
+                    class="btn btn-delete"
+                    onclick="hapusPeminjaman(${data.id})">
+                    Hapus
+                </button>
+
+            </td>
+
+        `;
+
+        tbody.appendChild(row);
+
+    });
+
+}
+
+
+/* HAPUS DATA */
+
+function hapusPeminjaman(id) {
+
+    if (!confirm("Hapus data peminjaman ini?")) {
+
+        return;
+
+    }
+
+
+    let index =
+        dataPeminjaman.findIndex(function(item) {
+
+            return item.id === id;
+
+        });
+
+
+    if (index === -1) {
+
+        return;
+
+    }
+
+
+    let data =
+        dataPeminjaman[index];
+
+
+    /* KEMBALIKAN STOK */
+
+    let dataAlat =
+        JSON.parse(localStorage.getItem("dataAlat")) || [];
+
+
+    let alat =
+        dataAlat.find(function(item) {
+
+            return item.kode === data.kode;
+
+        });
+
+
+    if (alat) {
+
+        alat.stok =
+            parseInt(alat.stok) + parseInt(data.jumlah);
+
+    }
+
+
+    localStorage.setItem(
+        "dataAlat",
+        JSON.stringify(dataAlat)
+    );
+
+
+    dataPeminjaman.splice(index, 1);
+
+
+    localStorage.setItem(
+        "dataPeminjaman",
+        JSON.stringify(dataPeminjaman)
+    );
+
+
+    tampilkanData();
+
+}
+
+
+/* LOAD DATA */
+
+tampilkanData();
+
+
+</script>
+
+</body>
+
+</html>
