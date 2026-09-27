@@ -1,1 +1,645 @@
+<!DOCTYPE html>
+<html lang="id">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Master Alat - Tool Room</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .search {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 300px;
+        }
+
+        .btn {
+            border: none;
+            padding: 11px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-tambah {
+            background: #f59a23;
+            color: #111;
+        }
+
+        .btn-edit {
+            background: #3498db;
+            color: white;
+            margin-right: 5px;
+        }
+
+        .btn-hapus {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .table-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+
+        th {
+            background: #202631;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            width: 450px;
+            max-width: 90%;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-simpan {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-batal {
+            background: #777;
+            color: white;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🧰 <span>TOOL ROOM</span>
+        </div>
+
+        <nav>
+
+            <a href="index.html">
+                🏠 Dashboard
+            </a>
+
+            <a href="master-alat.html" class="active">
+                🧰 Master Alat
+            </a>
+
+            <a href="stock-masuk.html">
+                📦 Stock Masuk
+            </a>
+
+            <a href="peminjaman.html">
+                👤 Peminjaman
+            </a>
+
+            <a href="pengembalian.html">
+                ↩️ Pengembalian
+            </a>
+
+            <a href="stock-opname.html">
+                📋 Stock Opname
+            </a>
+
+            <a href="berita-acara.html">
+                📄 Berita Acara
+            </a>
+
+        </nav>
+
+        <div class="user">
+            👷<br>
+            <strong>TOOLMAN</strong>
+        </div>
+
+    </aside>
+
+
+    <!-- KONTEN -->
+
+    <main class="content">
+
+        <header class="topbar">
+
+            <h1>MASTER ALAT</h1>
+
+            <p>
+                Data master alat dan perlengkapan kerja
+            </p>
+
+        </header>
+
+
+        <section class="dashboard">
+
+            <div class="toolbar">
+
+                <h2>Daftar Alat</h2>
+
+                <div>
+
+                    <input
+                        type="text"
+                        id="search"
+                        class="search"
+                        placeholder="🔎 Cari alat..."
+                        onkeyup="tampilkanData()"
+                    >
+
+                    <button
+                        class="btn btn-tambah"
+                        onclick="bukaForm()"
+                    >
+                        + Tambah Alat
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-box">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>No</th>
+                            <th>Kode Alat</th>
+                            <th>Nama Alat</th>
+                            <th>Kategori</th>
+                            <th>Merk</th>
+                            <th>Stok</th>
+                            <th>Lokasi</th>
+                            <th>Aksi</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="dataAlat">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- MODAL FORM -->
+
+    <div class="modal" id="modal">
+
+        <div class="modal-content">
+
+            <h2 id="judulForm">
+                Tambah Alat
+            </h2>
+
+            <div class="form-group">
+
+                <label>Kode Alat</label>
+
+                <input
+                    type="text"
+                    id="kode"
+                    placeholder="Contoh: TL-001"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Nama Alat</label>
+
+                <input
+                    type="text"
+                    id="nama"
+                    placeholder="Contoh: Kunci Inggris"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Kategori</label>
+
+                <select id="kategori">
+
+                    <option value="">
+                        Pilih kategori
+                    </option>
+
+                    <option>
+                        Hand Tool
+                    </option>
+
+                    <option>
+                        Power Tool
+                    </option>
+
+                    <option>
+                        Measuring Tool
+                    </option>
+
+                    <option>
+                        Safety
+                    </option>
+
+                    <option>
+                        Special Tool
+                    </option>
+
+                    <option>
+                        Lainnya
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Merk</label>
+
+                <input
+                    type="text"
+                    id="merk"
+                    placeholder="Contoh: KTC"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Stok</label>
+
+                <input
+                    type="number"
+                    id="stok"
+                    min="0"
+                    value="0"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Lokasi</label>
+
+                <input
+                    type="text"
+                    id="lokasi"
+                    placeholder="Contoh: Rak A1"
+                >
+
+            </div>
+
+
+            <div class="modal-buttons">
+
+                <button
+                    class="btn btn-batal"
+                    onclick="tutupForm()"
+                >
+                    Batal
+                </button>
+
+                <button
+                    class="btn btn-simpan"
+                    onclick="simpanData()"
+                >
+                    Simpan
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        let data = JSON.parse(
+            localStorage.getItem("dataAlat")
+        ) || [];
+
+        let indexEdit = -1;
+
+
+        function tampilkanData() {
+
+            const tbody =
+                document.getElementById("dataAlat");
+
+            const search =
+                document
+                .getElementById("search")
+                .value
+                .toLowerCase();
+
+            tbody.innerHTML = "";
+
+
+            const hasil = data.filter(item =>
+
+                item.kode.toLowerCase().includes(search) ||
+
+                item.nama.toLowerCase().includes(search) ||
+
+                item.kategori.toLowerCase().includes(search) ||
+
+                item.merk.toLowerCase().includes(search)
+
+            );
+
+
+            hasil.forEach((item, index) => {
+
+                const row =
+                    document.createElement("tr");
+
+                row.innerHTML = `
+
+                    <td>${index + 1}</td>
+
+                    <td>${item.kode}</td>
+
+                    <td>${item.nama}</td>
+
+                    <td>${item.kategori}</td>
+
+                    <td>${item.merk}</td>
+
+                    <td>${item.stok}</td>
+
+                    <td>${item.lokasi}</td>
+
+                    <td>
+
+                        <button
+                            class="btn btn-edit"
+                            onclick="editData(${data.indexOf(item)})"
+                        >
+                            Edit
+                        </button>
+
+                        <button
+                            class="btn btn-hapus"
+                            onclick="hapusData(${data.indexOf(item)})"
+                        >
+                            Hapus
+                        </button>
+
+                    </td>
+
+                `;
+
+                tbody.appendChild(row);
+
+            });
+
+        }
+
+
+        function bukaForm() {
+
+            indexEdit = -1;
+
+            document.getElementById("judulForm")
+                .innerText = "Tambah Alat";
+
+            document.getElementById("kode").value = "";
+            document.getElementById("nama").value = "";
+            document.getElementById("kategori").value = "";
+            document.getElementById("merk").value = "";
+            document.getElementById("stok").value = 0;
+            document.getElementById("lokasi").value = "";
+
+            document.getElementById("modal")
+                .style.display = "flex";
+
+        }
+
+
+        function tutupForm() {
+
+            document.getElementById("modal")
+                .style.display = "none";
+
+        }
+
+
+        function simpanData() {
+
+            const kode =
+                document.getElementById("kode").value.trim();
+
+            const nama =
+                document.getElementById("nama").value.trim();
+
+            const kategori =
+                document.getElementById("kategori").value;
+
+            const merk =
+                document.getElementById("merk").value.trim();
+
+            const stok =
+                document.getElementById("stok").value;
+
+            const lokasi =
+                document.getElementById("lokasi").value.trim();
+
+
+            if (!kode || !nama) {
+
+                alert("Kode alat dan nama alat wajib diisi!");
+
+                return;
+
+            }
+
+
+            const alat = {
+
+                kode: kode,
+
+                nama: nama,
+
+                kategori: kategori,
+
+                merk: merk,
+
+                stok: Number(stok),
+
+                lokasi: lokasi
+
+            };
+
+
+            if (indexEdit === -1) {
+
+                data.push(alat);
+
+            } else {
+
+                data[indexEdit] = alat;
+
+            }
+
+
+            localStorage.setItem(
+                "dataAlat",
+                JSON.stringify(data)
+            );
+
+
+            tutupForm();
+
+            tampilkanData();
+
+        }
+
+
+        function editData(index) {
+
+            indexEdit = index;
+
+            const item = data[index];
+
+
+            document.getElementById("judulForm")
+                .innerText = "Edit Alat";
+
+            document.getElementById("kode").value =
+                item.kode;
+
+            document.getElementById("nama").value =
+                item.nama;
+
+            document.getElementById("kategori").value =
+                item.kategori;
+
+            document.getElementById("merk").value =
+                item.merk;
+
+            document.getElementById("stok").value =
+                item.stok;
+
+            document.getElementById("lokasi").value =
+                item.lokasi;
+
+
+            document.getElementById("modal")
+                .style.display = "flex";
+
+        }
+
+
+        function hapusData(index) {
+
+            if (
+                confirm(
+                    "Apakah Anda yakin ingin menghapus alat ini?"
+                )
+            ) {
+
+                data.splice(index, 1);
+
+                localStorage.setItem(
+                    "dataAlat",
+                    JSON.stringify(data)
+                );
+
+                tampilkanData();
+
+            }
+
+        }
+
+
+        tampilkanData();
+
+    </script>
+
+</body>
+
+</html>
