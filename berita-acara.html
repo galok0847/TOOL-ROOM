@@ -1,1 +1,826 @@
+<!DOCTYPE html>
+<html lang="id">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Berita Acara - Tool Room</title>
+
+    <link rel="stylesheet"
+          href="style.css">
+
+    <style>
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #d68910;
+        }
+
+        .table-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #343a40;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background: white;
+            width: 600px;
+            max-width: 90%;
+            margin: 40px auto;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .modal-footer {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn-cancel {
+            background: #777;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+        }
+
+        .status {
+            background: #d4edda;
+            color: #155724;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <img src="logo.png.png"
+             alt="Logo">
+
+        <div>
+
+            <span>TOOL ROOM</span>
+
+            <small>
+                PT INTI UTAMA PERKASA
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <nav>
+
+        <a href="index.html">
+            🏠 Dashboard
+        </a>
+
+        <a href="master-alat.html">
+            🧰 Master Alat
+        </a>
+
+        <a href="stock-masuk.html">
+            📦 Stock Masuk
+        </a>
+
+        <a href="peminjaman.html">
+            👤 Peminjaman
+        </a>
+
+        <a href="pengembalian.html">
+            ↩️ Pengembalian
+        </a>
+
+        <a href="stock-opname.html">
+            📋 Stock Opname
+        </a>
+
+        <a href="berita-acara.html"
+           class="active">
+            📄 Berita Acara
+        </a>
+
+    </nav>
+
+
+    <div class="user">
+
+        👷<br>
+
+        <strong>
+            TOOLMAN
+        </strong>
+
+    </div>
+
+</aside>
+
+
+
+<!-- KONTEN -->
+
+<main class="content">
+
+
+    <header class="topbar">
+
+        <h1>
+            BERITA ACARA
+        </h1>
+
+        <p>
+            Pencatatan berita acara Tool Room
+        </p>
+
+    </header>
+
+
+
+    <section class="dashboard">
+
+
+        <div class="page-header">
+
+            <h2>
+                📄 Data Berita Acara
+            </h2>
+
+            <button
+                class="btn"
+                onclick="bukaModal()">
+
+                + Berita Acara
+
+            </button>
+
+        </div>
+
+
+
+        <div class="table-box">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>No</th>
+
+                        <th>
+                            Nomor BA
+                        </th>
+
+                        <th>
+                            Tanggal
+                        </th>
+
+                        <th>
+                            Jenis
+                        </th>
+
+                        <th>
+                            Judul
+                        </th>
+
+                        <th>
+                            Dibuat Oleh
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Aksi
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="tabelBA">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- MODAL -->
+
+<div
+    id="modal"
+    class="modal">
+
+
+    <div
+        class="modal-content">
+
+
+        <h2>
+            Buat Berita Acara
+        </h2>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Nomor Berita Acara
+            </label>
+
+            <input
+                type="text"
+                id="nomor"
+                placeholder="Contoh: BA/TR/001/2026">
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Tanggal
+            </label>
+
+            <input
+                type="date"
+                id="tanggal">
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Jenis Berita Acara
+            </label>
+
+            <select id="jenis">
+
+                <option value="">
+                    -- Pilih Jenis --
+                </option>
+
+                <option value="Stock Opname">
+                    Stock Opname
+                </option>
+
+                <option value="Kerusakan Alat">
+                    Kerusakan Alat
+                </option>
+
+                <option value="Kehilangan Alat">
+                    Kehilangan Alat
+                </option>
+
+                <option value="Serah Terima">
+                    Serah Terima
+                </option>
+
+                <option value="Lainnya">
+                    Lainnya
+                </option>
+
+            </select>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Judul
+            </label>
+
+            <input
+                type="text"
+                id="judul"
+                placeholder="Judul berita acara">
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Dibuat Oleh
+            </label>
+
+            <input
+                type="text"
+                id="dibuatOleh"
+                placeholder="Nama pembuat">
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Mengetahui / Atasan
+            </label>
+
+            <input
+                type="text"
+                id="mengetahui"
+                placeholder="Nama atasan">
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Isi Berita Acara
+            </label>
+
+            <textarea
+                id="isi"
+                rows="7"
+                placeholder="Tuliskan isi berita acara..."></textarea>
+
+        </div>
+
+
+
+        <div class="modal-footer">
+
+            <button
+                class="btn btn-cancel"
+                onclick="tutupModal()">
+
+                Batal
+
+            </button>
+
+
+            <button
+                class="btn"
+                onclick="simpanBA()">
+
+                Simpan
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+
+let dataBA =
+    JSON.parse(
+        localStorage.getItem(
+            "dataBA"
+        )
+    ) || [];
+
+
+
+/* BUKA MODAL */
+
+function bukaModal() {
+
+    document.getElementById(
+        "modal"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "tanggal"
+    ).value =
+        new Date()
+        .toISOString()
+        .split("T")[0];
+
+}
+
+
+
+/* TUTUP MODAL */
+
+function tutupModal() {
+
+    document.getElementById(
+        "modal"
+    ).style.display = "none";
+
+}
+
+
+
+/* SIMPAN */
+
+function simpanBA() {
+
+
+    let nomor =
+        document.getElementById(
+            "nomor"
+        ).value.trim();
+
+
+    let tanggal =
+        document.getElementById(
+            "tanggal"
+        ).value;
+
+
+    let jenis =
+        document.getElementById(
+            "jenis"
+        ).value;
+
+
+    let judul =
+        document.getElementById(
+            "judul"
+        ).value.trim();
+
+
+    let dibuatOleh =
+        document.getElementById(
+            "dibuatOleh"
+        ).value.trim();
+
+
+    let mengetahui =
+        document.getElementById(
+            "mengetahui"
+        ).value.trim();
+
+
+    let isi =
+        document.getElementById(
+            "isi"
+        ).value.trim();
+
+
+
+    if (
+        !nomor ||
+        !tanggal ||
+        !jenis ||
+        !judul ||
+        !dibuatOleh ||
+        !isi
+    ) {
+
+        alert(
+            "Mohon lengkapi data yang wajib."
+        );
+
+        return;
+
+    }
+
+
+
+    /* CEK NOMOR DUPLIKAT */
+
+    let nomorSudahAda =
+        dataBA.some(
+            function(data) {
+
+                return data.nomor === nomor;
+
+            }
+        );
+
+
+    if (nomorSudahAda) {
+
+        alert(
+            "Nomor Berita Acara sudah digunakan."
+        );
+
+        return;
+
+    }
+
+
+
+    let dataBaru = {
+
+        id: Date.now(),
+
+        nomor: nomor,
+
+        tanggal: tanggal,
+
+        jenis: jenis,
+
+        judul: judul,
+
+        dibuatOleh: dibuatOleh,
+
+        mengetahui: mengetahui,
+
+        isi: isi,
+
+        status: "Draft"
+
+    };
+
+
+
+    dataBA.push(
+        dataBaru
+    );
+
+
+    localStorage.setItem(
+        "dataBA",
+        JSON.stringify(
+            dataBA
+        )
+    );
+
+
+    tutupModal();
+
+    tampilkanData();
+
+
+    /* KOSONGKAN FORM */
+
+    document.getElementById(
+        "nomor"
+    ).value = "";
+
+    document.getElementById(
+        "jenis"
+    ).value = "";
+
+    document.getElementById(
+        "judul"
+    ).value = "";
+
+    document.getElementById(
+        "dibuatOleh"
+    ).value = "";
+
+    document.getElementById(
+        "mengetahui"
+    ).value = "";
+
+    document.getElementById(
+        "isi"
+    ).value = "";
+
+}
+
+
+
+/* TAMPILKAN DATA */
+
+function tampilkanData() {
+
+
+    let tbody =
+        document.getElementById(
+            "tabelBA"
+        );
+
+
+    tbody.innerHTML = "";
+
+
+    dataBA.forEach(
+        function(data, index) {
+
+
+            let row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${index + 1}
+                </td>
+
+                <td>
+                    ${data.nomor}
+                </td>
+
+                <td>
+                    ${data.tanggal}
+                </td>
+
+                <td>
+                    ${data.jenis}
+                </td>
+
+                <td>
+                    ${data.judul}
+                </td>
+
+                <td>
+                    ${data.dibuatOleh}
+                </td>
+
+                <td>
+
+                    <span class="status">
+                        ${data.status}
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <button
+                        class="btn btn-delete"
+                        onclick="hapusBA(${data.id})">
+
+                        Hapus
+
+                    </button>
+
+                </td>
+
+            `;
+
+
+            tbody.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+
+/* HAPUS */
+
+function hapusBA(id) {
+
+
+    if (
+        !confirm(
+            "Hapus berita acara ini?"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    dataBA =
+        dataBA.filter(
+            function(item) {
+
+                return item.id !== id;
+
+            }
+        );
+
+
+    localStorage.setItem(
+        "dataBA",
+        JSON.stringify(
+            dataBA
+        )
+    );
+
+
+    tampilkanData();
+
+}
+
+
+
+/* LOAD */
+
+tampilkanData();
+
+
+</script>
+
+
+</body>
+
+</html>
