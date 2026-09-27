@@ -1,1 +1,728 @@
+<!DOCTYPE html>
+<html lang="id">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Stock Masuk - Tool Room</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .btn {
+            border: none;
+            padding: 11px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-tambah {
+            background: #f59a23;
+            color: #111;
+        }
+
+        .btn-hapus {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .table-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+
+        th {
+            background: #202631;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            width: 500px;
+            max-width: 90%;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-group textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-simpan {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-batal {
+            background: #777;
+            color: white;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🧰 <span>TOOL ROOM</span>
+        </div>
+
+        <nav>
+
+            <a href="index.html">
+                🏠 Dashboard
+            </a>
+
+            <a href="master-alat.html">
+                🧰 Master Alat
+            </a>
+
+            <a href="stock-masuk.html" class="active">
+                📦 Stock Masuk
+            </a>
+
+            <a href="peminjaman.html">
+                👤 Peminjaman
+            </a>
+
+            <a href="pengembalian.html">
+                ↩️ Pengembalian
+            </a>
+
+            <a href="stock-opname.html">
+                📋 Stock Opname
+            </a>
+
+            <a href="berita-acara.html">
+                📄 Berita Acara
+            </a>
+
+        </nav>
+
+        <div class="user">
+            👷<br>
+            <strong>TOOLMAN</strong>
+        </div>
+
+    </aside>
+
+
+    <!-- KONTEN -->
+
+    <main class="content">
+
+        <header class="topbar">
+
+            <h1>STOCK MASUK</h1>
+
+            <p>
+                Pencatatan alat dan perlengkapan yang masuk
+            </p>
+
+        </header>
+
+
+        <section class="dashboard">
+
+
+            <div class="toolbar">
+
+                <h2>Riwayat Stock Masuk</h2>
+
+                <button
+                    class="btn btn-tambah"
+                    onclick="bukaForm()"
+                >
+                    + Stock Masuk
+                </button>
+
+            </div>
+
+
+            <div class="table-box">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>No</th>
+                            <th>Tanggal</th>
+                            <th>Kode Alat</th>
+                            <th>Nama Alat</th>
+                            <th>Jumlah</th>
+                            <th>Supplier</th>
+                            <th>Keterangan</th>
+                            <th>Aksi</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="dataStock">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- MODAL -->
+
+    <div class="modal" id="modal">
+
+        <div class="modal-content">
+
+            <h2>Tambah Stock Masuk</h2>
+
+
+            <div class="form-group">
+
+                <label>Tanggal Masuk</label>
+
+                <input
+                    type="date"
+                    id="tanggal"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Pilih Alat</label>
+
+                <select
+                    id="alat"
+                    onchange="tampilkanInfoAlat()"
+                >
+
+                    <option value="">
+                        Pilih alat
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div
+                id="infoAlat"
+                style="
+                    background:#f4f5f7;
+                    padding:10px;
+                    border-radius:7px;
+                    margin-bottom:15px;
+                "
+            >
+                Pilih alat terlebih dahulu.
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Jumlah Masuk</label>
+
+                <input
+                    type="number"
+                    id="jumlah"
+                    min="1"
+                    value="1"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Supplier</label>
+
+                <input
+                    type="text"
+                    id="supplier"
+                    placeholder="Nama supplier"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Keterangan</label>
+
+                <textarea
+                    id="keterangan"
+                    placeholder="Keterangan stock masuk"
+                ></textarea>
+
+            </div>
+
+
+            <div class="modal-buttons">
+
+                <button
+                    class="btn btn-batal"
+                    onclick="tutupForm()"
+                >
+                    Batal
+                </button>
+
+                <button
+                    class="btn btn-simpan"
+                    onclick="simpanStock()"
+                >
+                    Simpan
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+
+        /* DATA MASTER ALAT */
+
+        let dataAlat = JSON.parse(
+            localStorage.getItem("dataAlat")
+        ) || [];
+
+
+        /* DATA STOCK MASUK */
+
+        let dataStock = JSON.parse(
+            localStorage.getItem("dataStockMasuk")
+        ) || [];
+
+
+        /* TAMPILKAN PILIHAN ALAT */
+
+        function isiPilihanAlat() {
+
+            const select =
+                document.getElementById("alat");
+
+            select.innerHTML =
+                '<option value="">Pilih alat</option>';
+
+
+            dataAlat.forEach((item, index) => {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = index;
+
+                option.textContent =
+                    item.kode + " - " + item.nama;
+
+                select.appendChild(option);
+
+            });
+
+        }
+
+
+        /* INFO ALAT */
+
+        function tampilkanInfoAlat() {
+
+            const index =
+                document.getElementById("alat").value;
+
+            const info =
+                document.getElementById("infoAlat");
+
+
+            if (index === "") {
+
+                info.innerHTML =
+                    "Pilih alat terlebih dahulu.";
+
+                return;
+
+            }
+
+
+            const item =
+                dataAlat[index];
+
+
+            info.innerHTML =
+
+                "<strong>Kode:</strong> " +
+                item.kode +
+                "<br>" +
+
+                "<strong>Nama:</strong> " +
+                item.nama +
+                "<br>" +
+
+                "<strong>Stok Saat Ini:</strong> " +
+                item.stok;
+
+        }
+
+
+        /* TAMPILKAN DATA */
+
+        function tampilkanData() {
+
+            const tbody =
+                document.getElementById("dataStock");
+
+            tbody.innerHTML = "";
+
+
+            dataStock.forEach((item, index) => {
+
+                const row =
+                    document.createElement("tr");
+
+
+                row.innerHTML = `
+
+                    <td>${index + 1}</td>
+
+                    <td>${item.tanggal}</td>
+
+                    <td>${item.kode}</td>
+
+                    <td>${item.nama}</td>
+
+                    <td>${item.jumlah}</td>
+
+                    <td>${item.supplier}</td>
+
+                    <td>${item.keterangan}</td>
+
+                    <td>
+
+                        <button
+                            class="btn btn-hapus"
+                            onclick="hapusStock(${index})"
+                        >
+                            Hapus
+                        </button>
+
+                    </td>
+
+                `;
+
+
+                tbody.appendChild(row);
+
+            });
+
+        }
+
+
+        /* BUKA FORM */
+
+        function bukaForm() {
+
+            dataAlat = JSON.parse(
+                localStorage.getItem("dataAlat")
+            ) || [];
+
+
+            isiPilihanAlat();
+
+
+            document.getElementById("tanggal").value =
+                new Date().toISOString().split("T")[0];
+
+
+            document.getElementById("jumlah").value = 1;
+
+            document.getElementById("supplier").value = "";
+
+            document.getElementById("keterangan").value = "";
+
+            document.getElementById("alat").value = "";
+
+            document.getElementById("infoAlat").innerHTML =
+                "Pilih alat terlebih dahulu.";
+
+
+            document.getElementById("modal")
+                .style.display = "flex";
+
+        }
+
+
+        /* TUTUP FORM */
+
+        function tutupForm() {
+
+            document.getElementById("modal")
+                .style.display = "none";
+
+        }
+
+
+        /* SIMPAN STOCK */
+
+        function simpanStock() {
+
+            const tanggal =
+                document.getElementById("tanggal").value;
+
+            const index =
+                document.getElementById("alat").value;
+
+            const jumlah =
+                Number(
+                    document.getElementById("jumlah").value
+                );
+
+            const supplier =
+                document.getElementById("supplier").value.trim();
+
+            const keterangan =
+                document.getElementById("keterangan").value.trim();
+
+
+            if (tanggal === "") {
+
+                alert("Tanggal wajib diisi!");
+
+                return;
+
+            }
+
+
+            if (index === "") {
+
+                alert("Silakan pilih alat!");
+
+                return;
+
+            }
+
+
+            if (jumlah <= 0) {
+
+                alert("Jumlah harus lebih dari 0!");
+
+                return;
+
+            }
+
+
+            const alat =
+                dataAlat[index];
+
+
+            /* TAMBAH STOCK */
+
+            alat.stok =
+                Number(alat.stok) + jumlah;
+
+
+            /* SIMPAN MASTER */
+
+            localStorage.setItem(
+                "dataAlat",
+                JSON.stringify(dataAlat)
+            );
+
+
+            /* BUAT TRANSAKSI */
+
+            const transaksi = {
+
+                tanggal: tanggal,
+
+                kode: alat.kode,
+
+                nama: alat.nama,
+
+                jumlah: jumlah,
+
+                supplier: supplier,
+
+                keterangan: keterangan
+
+            };
+
+
+            dataStock.push(transaksi);
+
+
+            localStorage.setItem(
+                "dataStockMasuk",
+                JSON.stringify(dataStock)
+            );
+
+
+            alert(
+                "Stock berhasil ditambahkan!"
+            );
+
+
+            tutupForm();
+
+            tampilkanData();
+
+        }
+
+
+        /* HAPUS TRANSAKSI */
+
+        function hapusStock(index) {
+
+            const transaksi =
+                dataStock[index];
+
+
+            if (
+                !confirm(
+                    "Hapus transaksi ini? Stock akan dikurangi kembali."
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            /* CARI ALAT */
+
+            const alat =
+                dataAlat.find(
+                    item =>
+                        item.kode === transaksi.kode
+                );
+
+
+            if (alat) {
+
+                alat.stok =
+                    Number(alat.stok) -
+                    Number(transaksi.jumlah);
+
+
+                if (alat.stok < 0) {
+
+                    alat.stok = 0;
+
+                }
+
+            }
+
+
+            /* SIMPAN MASTER */
+
+            localStorage.setItem(
+                "dataAlat",
+                JSON.stringify(dataAlat)
+            );
+
+
+            /* HAPUS TRANSAKSI */
+
+            dataStock.splice(index, 1);
+
+
+            localStorage.setItem(
+                "dataStockMasuk",
+                JSON.stringify(dataStock)
+            );
+
+
+            tampilkanData();
+
+        }
+
+
+        tampilkanData();
+
+    </script>
+
+
+</body>
+
+</html>
