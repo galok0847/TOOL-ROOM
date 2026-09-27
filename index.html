@@ -1,20 +1,147 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
+
 <head>
-    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Tool Room Management</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <h1>TOOL ROOM MANAGEMENT</h1>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
 
-    <p>Selamat datang di Tool Room Management.</p>
+        <div class="logo">
+            🧰
+            <span>TOOL ROOM</span>
+        </div>
 
-    <button>Master Alat</button>
-    <button>Peminjaman</button>
-    <button>Pengembalian</button>
+        <nav>
+
+            <a href="#" class="active">
+                🏠 Dashboard
+            </a>
+
+            <a href="#">
+                🧰 Master Alat
+            </a>
+
+            <a href="#">
+                📦 Stock Masuk
+            </a>
+
+            <a href="#">
+                👤 Peminjaman
+            </a>
+
+            <a href="#">
+                ↩️ Pengembalian
+            </a>
+
+            <a href="#">
+                📋 Stock Opname
+            </a>
+
+            <a href="#">
+                📄 Berita Acara
+            </a>
+
+        </nav>
+
+        <div class="user">
+            👷 TOOLMAN
+        </div>
+
+    </aside>
+
+
+    <!-- KONTEN UTAMA -->
+    <main class="content">
+
+        <!-- HEADER -->
+        <header class="topbar">
+
+            <div>
+                <h1>TOOL ROOM MANAGEMENT</h1>
+
+                <p>
+                    Sistem pengelolaan alat dan perlengkapan kerja
+                </p>
+            </div>
+
+        </header>
+
+
+        <!-- DASHBOARD -->
+        <section class="dashboard">
+
+            <h2>Dashboard</h2>
+
+            <div class="cards">
+
+                <div class="card">
+                    <div class="icon">🧰</div>
+
+                    <div>
+                        <h3>Master Alat</h3>
+                        <p>0 Alat</p>
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="icon">📦</div>
+
+                    <div>
+                        <h3>Stock Masuk</h3>
+                        <p>0 Transaksi</p>
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="icon">👤</div>
+
+                    <div>
+                        <h3>Peminjaman</h3>
+                        <p>0 Alat Dipinjam</p>
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="icon">↩️</div>
+
+                    <div>
+                        <h3>Pengembalian</h3>
+                        <p>0 Pengembalian</p>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- INFORMASI -->
+            <div class="welcome">
+
+                <h2>Selamat Datang di Tool Room</h2>
+
+                <p>
+                    Gunakan menu di sebelah kiri untuk mengelola
+                    master alat, stock, peminjaman, pengembalian,
+                    dan stock opname.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
 
 </body>
+
 </html>
