@@ -1,7 +1,3 @@
-/* =========================
-   DASAR WEBSITE
-========================= */
-
 * {
     box-sizing: border-box;
 }
@@ -14,9 +10,7 @@ body {
 }
 
 
-/* =========================
-   SIDEBAR
-========================= */
+/* SIDEBAR */
 
 .sidebar {
     position: fixed;
@@ -35,15 +29,10 @@ body {
     flex-direction: column;
 }
 
-
-/* LOGO */
-
 .logo {
     font-size: 22px;
     font-weight: bold;
-
     padding: 15px;
-
     margin-bottom: 30px;
 }
 
@@ -62,7 +51,6 @@ body {
 
 .sidebar nav a {
     color: white;
-
     text-decoration: none;
 
     padding: 14px 15px;
@@ -70,19 +58,11 @@ body {
     border-radius: 8px;
 
     font-size: 15px;
-
-    transition: 0.2s;
 }
-
-
-/* HOVER */
 
 .sidebar nav a:hover {
     background: #333b49;
 }
-
-
-/* MENU AKTIF */
 
 .sidebar nav a.active {
     background: #f59a23;
@@ -103,28 +83,21 @@ body {
     border-radius: 8px;
 
     text-align: center;
-
-    font-size: 14px;
 }
 
 
-/* =========================
-   KONTEN UTAMA
-========================= */
+/* KONTEN */
 
 .content {
     margin-left: 250px;
-
     min-height: 100vh;
 }
 
 
-/* =========================
-   HEADER
-========================= */
+/* HEADER */
 
 .topbar {
-    background: #ffffff;
+    background: white;
 
     padding: 30px 40px;
 
@@ -133,20 +106,16 @@ body {
 
 .topbar h1 {
     margin: 0;
-
     font-size: 28px;
 }
 
 .topbar p {
     margin-top: 8px;
-
     color: #777;
 }
 
 
-/* =========================
-   DASHBOARD
-========================= */
+/* DASHBOARD */
 
 .dashboard {
     padding: 35px 40px;
@@ -157,19 +126,15 @@ body {
 }
 
 
-/* =========================
-   CARD
-========================= */
+/* CARD */
 
 .cards {
     display: grid;
 
-    grid-template-columns:
-        repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr);
 
     gap: 20px;
 }
-
 
 .card {
     background: white;
@@ -178,8 +143,7 @@ body {
 
     border-radius: 12px;
 
-    box-shadow:
-        0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 
     display: flex;
 
@@ -188,29 +152,21 @@ body {
     gap: 15px;
 }
 
-
 .card .icon {
     font-size: 35px;
 }
 
-
 .card h3 {
     margin: 0 0 5px 0;
-
-    font-size: 16px;
 }
-
 
 .card p {
     margin: 0;
-
     color: #777;
 }
 
 
-/* =========================
-   WELCOME
-========================= */
+/* WELCOME */
 
 .welcome {
     background: white;
@@ -221,8 +177,7 @@ body {
 
     border-radius: 12px;
 
-    box-shadow:
-        0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .welcome h2 {
@@ -231,24 +186,22 @@ body {
 
 .welcome p {
     color: #666;
-
     line-height: 1.6;
 }
 
 
-/* =========================
-   RESPONSIVE HP
-========================= */
+/* TAMPILAN TABLET */
 
 @media (max-width: 900px) {
 
     .cards {
-        grid-template-columns:
-            repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
 
 }
 
+
+/* TAMPILAN HP */
 
 @media (max-width: 600px) {
 
@@ -264,10 +217,6 @@ body {
     .sidebar nav a {
         font-size: 0;
         text-align: center;
-    }
-
-    .sidebar nav a:first-letter {
-        font-size: 20px;
     }
 
     .user {
